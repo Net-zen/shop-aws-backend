@@ -16,7 +16,7 @@ const getProductsById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async
       message: `Product with id ${id} not found`
     });
   }
-  return formatJSONResponse(200, {product});
+  return formatJSONResponse(200, product);
 }
 
 export const main = middyfy(getProductsById);

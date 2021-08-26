@@ -8,8 +8,8 @@ import schema from './schema';
 
 import productList from './productList.json';
 
-const getProducts: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () => {
+const getProductsList: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () => {
   return formatJSONResponse(200, {productList});
 }
 
-export const main = middyfy(getProducts);
+export const main = middyfy(getProductsList);

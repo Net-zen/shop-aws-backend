@@ -8,7 +8,7 @@ import schema from './schema';
 
 import productList from './productList.json';
 
-const getProductById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
+const getProductsById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
   const id = event.pathParameters.productId;
   const product = productList.find(product => product.id === id);
   if (!product) {
@@ -19,4 +19,4 @@ const getProductById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async 
   return formatJSONResponse(200, {product});
 }
 
-export const main = middyfy(getProductById);
+export const main = middyfy(getProductsById);

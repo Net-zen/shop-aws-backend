@@ -42,7 +42,8 @@ describe('Items in products list correct', () => {
         description: expect.any(String),
         id: expect.any(String),
         price: expect.any(Number),
-        title: expect.any(String)
+        title: expect.any(String),
+        imageUrl: expect.stringMatching(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)/)
       })
     })
 });
@@ -59,11 +60,12 @@ describe('Items in products list correct', () => {
       const product = JSON.parse(result.body);
 
       expect(product).toEqual({
-        count: 4,
-        description: 'Short Product Description1',
+        count: 1,
+        description: 'Atlanta Hawks Nike Association Swingman Jersey - Trae Young - Mens',
         id: '7567ec4b-b10c-48c5-9345-fc73c48a80aa',
-        price: 2.4,
-        title: 'ProductOne'
+        price: 107,
+        title: 'Atlanta Hawks',
+        "imageUrl": "https://images-for-nba-jerseys-store.s3.eu-west-1.amazonaws.com/img/atlanta.webp"
       })
     })
 });

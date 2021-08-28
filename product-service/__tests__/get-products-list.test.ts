@@ -22,7 +22,8 @@ describe('Items in products list correct', () => {
           description: expect.any(String),
           id: expect.any(String),
           price: expect.any(Number),
-          title: expect.any(String)
+          title: expect.any(String),
+          imageUrl: expect.stringMatching(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)/)
         })
       })
     })

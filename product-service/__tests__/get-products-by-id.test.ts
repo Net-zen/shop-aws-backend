@@ -1,6 +1,12 @@
 import {APIGatewayProxyEvent} from "aws-lambda";
 import { main as getProductsById } from '../src/functions/get-products-by-id/handler';
 
+type result = {
+  headers?: {},
+  statusCode?: number,
+  body?: string
+}
+
 describe('Status code', () => {
   test('check request respond correct status code', async () => {
     const event: APIGatewayProxyEvent = {
@@ -8,7 +14,7 @@ describe('Status code', () => {
         productId: '123abc'
       }
     } as any;
-    const result = await getProductsById(event);
+    const result: result = await getProductsById(event, undefined, undefined);
     expect(result.statusCode).toEqual(404);
   })
 });
@@ -20,7 +26,7 @@ describe('Status code', () => {
         productId: '7567ec4b-b10c-48c5-9345-fc73c48a80aa'
       }
     } as any;
-    const result = await getProductsById(event);
+    const result: result = await getProductsById(event, undefined, undefined);
     expect(result.statusCode).toEqual(200);
   })
 });
@@ -34,7 +40,7 @@ describe('Items in products list correct', () => {
           productId: '7567ec4b-b10c-48c5-9345-fc73c48a80aa'
         }
       } as any
-      const result = await getProductsById(event);
+      const result: result = await getProductsById(event, undefined, undefined);
       const product = JSON.parse(result.body);
 
       expect(product).toEqual({
@@ -43,7 +49,7 @@ describe('Items in products list correct', () => {
         id: expect.any(String),
         price: expect.any(Number),
         title: expect.any(String),
-        imageUrl: expect.stringMatching(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)/)
+        imageUrl: expect.stringMatching(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&/=]*)/)
       })
     })
 });
@@ -56,7 +62,7 @@ describe('Items in products list correct', () => {
           productId: '7567ec4b-b10c-48c5-9345-fc73c48a80aa'
         }
       } as any
-      const result = await getProductsById(event);
+      const result: result = await getProductsById(event, undefined, undefined);
       const product = JSON.parse(result.body);
 
       expect(product).toEqual({

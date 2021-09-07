@@ -15,8 +15,7 @@ create table stocks (
     foreign key ("product_id") references "products" ("id")
 );
 
-with product as (
-    insert into products (title, description, price, imageUrl) values
+insert into products (title, description, price, imageUrl) values
     (
      'Atlanta Hawks',
      'Atlanta Hawks Nike Association Swingman Jersey - Trae Young - Mens',
@@ -78,7 +77,7 @@ with product as (
      'https://images-for-nba-jerseys-store.s3.eu-west-1.amazonaws.com/img/milwaukee.jpg'
     ),
     (
-     'New York',
+     'New York Knicks',
      'New York Knicks Nike Icon Swingman Jersey - RJ Barrett - Mens',
      15,
      'https://images-for-nba-jerseys-store.s3.eu-west-1.amazonaws.com/img/new-york.jpg'
@@ -196,10 +195,9 @@ with product as (
       'Utah Jazz Nike Association Swingman Jersey - Donovan Mitchell - Mens',
       107,
       'https://images-for-nba-jerseys-store.s3.eu-west-1.amazonaws.com/img/utah.jpg'
-    )
-    returning id, title
-)
-insert into stocks (product_id, count) VALUES
+    );
+
+insert into stocks (product_id, count) values
     ((select id from products where title = 'Atlanta Hawks'), 1),
     ((select id from products where title = 'Boston Celtics'), 2),
     ((select id from products where title = 'Brooklyn Nets'), 7),

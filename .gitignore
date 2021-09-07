@@ -3,3 +3,4 @@ node_modules/
 .serverless/
 .webpack/
 /product-service/test.json
+/product-service/.env

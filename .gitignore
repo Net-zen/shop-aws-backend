@@ -4,3 +4,4 @@ node_modules/
 .webpack/
 /product-service/test.json
 /product-service/.env
+/product-service/coverage

@@ -27,11 +27,11 @@ const serverlessConfiguration: AWS = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-      DB_HOST: process.env.DB_HOST,
-      DB_PORT: process.env.DB_PORT,
-      DB_DATABASE: process.env.DB_DATABASE,
-      DB_USERNAME: process.env.DB_USERNAME,
-      DB_PASSWORD: process.env.DB_PASSWORD
+      DB_HOST: '${env:DB_HOST}',
+      DB_PORT: '${env:DB_PORT}',
+      DB_DATABASE: '${env:DB_DATABASE}',
+      DB_USERNAME: '${env:DB_USERNAME}',
+      DB_PASSWORD: '${env:DB_PASSWORD}'
     },
     lambdaHashingVersion: '20201221',
   },

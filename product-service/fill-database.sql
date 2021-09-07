@@ -5,7 +5,7 @@ create table  products (
     title text not null,
     description text,
     price integer,
-    imageUrl text
+    image_url text
 );
 
 create table stocks (
@@ -15,7 +15,7 @@ create table stocks (
     foreign key ("product_id") references "products" ("id")
 );
 
-insert into products (title, description, price, imageUrl) values
+insert into products (title, description, price, image_url) values
     (
      'Atlanta Hawks',
      'Atlanta Hawks Nike Association Swingman Jersey - Trae Young - Mens',

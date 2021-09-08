@@ -6,7 +6,7 @@ import {middyfy} from '@libs/lambda';
 
 import schema from './schema';
 
-import { Client } from 'pg';
+import {Client} from 'pg';
 
 const {DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD} = process.env;
 const dbOptions = {
@@ -22,6 +22,8 @@ const dbOptions = {
 };
 
 const getProductsById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
+  console.log('getProductsById, event: ', event);
+
   const id = event.pathParameters.productId;
 
   const uuidv4 = /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
@@ -38,18 +40,22 @@ const getProductsById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async
 
 
   try {
-    const res = await client.query(`select p.*, s.count
-                                    from products as p
-                                             left join stocks as s on p.id = s.product_id
-                                    where p.id = '${id}'`);
-
-    console.log(`product with id ${id}: `, res.rows);
+    const res = await client.query(`
+        select p.*, s.count
+        from products as p
+        left join stocks as s on p.id = s.product_id
+        where p.id = '${id}'`
+    );
 
     if (!res.rows) {
-      return formatJSONResponse( 404, {
+      console.error(`product with id ${id}:  not found`);
+
+      return formatJSONResponse(404, {
         message: `Product with id ${id} not found`
       });
     }
+
+    console.log(`product with id ${id}: `, res.rows);
 
     return formatJSONResponse(200, res.rows);
   } catch (err) {

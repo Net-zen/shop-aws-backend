@@ -6,7 +6,7 @@ import {middyfy} from '@libs/lambda';
 
 import schema from './schema';
 
-import { Client } from 'pg';
+import {Client} from 'pg';
 
 const {DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD} = process.env;
 const dbOptions = {
@@ -22,14 +22,17 @@ const dbOptions = {
 };
 
 const getProductsList: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () => {
+  console.log('getProductsList');
+
   const client = new Client(dbOptions);
   await client.connect();
 
   try {
-    const res = await client.query('select p.*, s.count\n' +
-    'from products as p\n' +
-    'left join stocks as s on p.id = s.product_id;'
-  );
+    const res = await client.query(`
+        select p.*, s.count
+        from products as p
+        left join stocks as s on p.id = s.product_id`
+    );
 
     console.log('products from db:', res.rows);
 

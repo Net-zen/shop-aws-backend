@@ -22,6 +22,8 @@ const dbOptions = {
 };
 
 const createProduct: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
+  console.log('createProduct, event: ', event);
+
   const client = new Client(dbOptions);
   await client.connect();
 
@@ -35,10 +37,13 @@ const createProduct: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
         RETURNING *`
     );
     const resCount = await client.query(`
-      insert into stocks (product_id, count) values
-        ((select id from products where id = '${res.rows[0].id}'), ${count}) returning count`
+        insert into stocks (product_id, count)
+        values ((select id from products where id = '${res.rows[0].id}'), ${count})
+        returning count`
     );
     await client.query('commit');
+
+    console.log('product, added to db: ', {...res.rows[0], ...resCount.rows[0]});
 
     return formatJSONResponse(200, {...res.rows[0], ...resCount.rows[0]});
   } catch (err) {

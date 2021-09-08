@@ -3,5 +3,6 @@ node_modules/
 .serverless/
 .webpack/
 /product-service/test.json
+/product-service/test-post.json
 /product-service/.env
 /product-service/coverage

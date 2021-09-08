@@ -32,7 +32,7 @@ const getProductsById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async
   if (!isValidProductId) {
     console.error(`Product id ${id} is not valid`);
 
-    return formatJSONResponse(404, {message: `Product id ${id} is not valid`})
+    return formatJSONResponse(400, {message: `Product id ${id} is not valid`})
   }
 
   const client = new Client(dbOptions);
@@ -47,7 +47,7 @@ const getProductsById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async
         where p.id = '${id}'`
     );
 
-    if (!res.rows) {
+    if (!res.rows[0]) {
       console.error(`product with id ${id}:  not found`);
 
       return formatJSONResponse(404, {

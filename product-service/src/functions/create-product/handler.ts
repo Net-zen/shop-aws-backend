@@ -6,7 +6,7 @@ import {middyfy} from '@libs/lambda';
 
 import schema from './schema';
 
-import { Client } from 'pg';
+import {Client} from 'pg';
 
 const {DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD} = process.env;
 const dbOptions = {
@@ -25,21 +25,26 @@ const createProduct: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
   const client = new Client(dbOptions);
   await client.connect();
 
-  const { title, description, price, image_url, count } = event.body;
+  const {title, description, price, image_url, count} = event.body;
 
   try {
-    const res = await client.query(`WITH product as (
-        insert into products (title, description, price, image_url) values
-            ('${title}', '${description}', ${price}, '${image_url}') RETURNING *
-        )
-        insert into stocks (product_id, count) values
-            ((select id from product), ${count}) returning product_id`);
+    await client.query('begin');
+    const res = await client.query(`
+        insert into products (title, description, price, image_url)
+        values ('${title}', '${description}', ${price}, '${image_url}')
+        RETURNING *`
+    );
+    const resCount = await client.query(`
+      insert into stocks (product_id, count) values
+        ((select id from products where id = '${res.rows[0].id}'), ${count}) returning count`
+    );
+    await client.query('commit');
 
-    console.log('products from db:', res.rows[0].product_id);
-
-    return formatJSONResponse(200, {id: res.rows[0].product_id, ...event.body});
+    return formatJSONResponse(200, {...res.rows[0], ...resCount.rows[0]});
   } catch (err) {
     console.error('Fail to add product to db ', err);
+
+    await client.query('rollback');
 
     return formatJSONResponse(500, {message: 'Fail to add product to db'})
   } finally {

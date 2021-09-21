@@ -25,20 +25,6 @@ describe('Import service importProductsFile', () => {
     expect(result.statusCode).toEqual(200)
   })
 
-  test('should return status code 400', async () => {
-    const emptyEvent: APIGatewayProxyEvent = {} as any
-    const result: result = await importProductsFile(emptyEvent, undefined, undefined)
-    expect(result.statusCode).toEqual(400)
-  })
-
-  test('should return status code 400', async () => {
-    const emptyEvent: APIGatewayProxyEvent = {
-      queryStringParameters: {}
-    } as any
-    const result: result = await importProductsFile(emptyEvent, undefined, undefined)
-    expect(result.statusCode).toEqual(400)
-  })
-
   test('should return valid signed url', async () => {
     const event: APIGatewayProxyEvent = {
       queryStringParameters: {

@@ -12,18 +12,6 @@ const BUCKET = 'store-import'
 const importProductsFile: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
   console.log('importProductsFile, event: ', event)
 
-  if (!event.hasOwnProperty('queryStringParameters')) {
-    return formatJSONResponse(400, {
-      message: 'Request must contain file name'
-    })
-  }
-
-  if (!event.queryStringParameters.hasOwnProperty('name')) {
-    return formatJSONResponse(400, {
-      message: 'Request must contain file name'
-    })
-  }
-
   const fileName = event.queryStringParameters.name
   const catalogPath = `uploaded/${fileName}`
   const s3 = new AWS.S3({region: 'eu-west-1'})

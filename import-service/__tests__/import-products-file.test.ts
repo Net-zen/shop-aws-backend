@@ -15,6 +15,7 @@ describe('Import service importProductsFile', () => {
   beforeAll( async () => {
     AWS.mock('S3', 'getSignedUrl', `https://${TEST_FILE}`)
   })
+
   test('should return status code 200', async () => {
     const event: APIGatewayProxyEvent = {
       queryStringParameters: {

@@ -32,11 +32,12 @@ describe('Import service importProductsFile', () => {
       }
     } as any
     const result: result = await importProductsFile(event, undefined, undefined)
-    expect(result.body).toMatch(`https://${TEST_FILE}`)
+    expect(JSON.parse(result.body)).toEqual(`https://${TEST_FILE}`)
   })
 
   test('should return status code 500', async () => {
-    AWS.mock('S3', 'getSignedUrlPromise', () => {
+    AWS.restore('S3')
+    AWS.mock('S3', 'getSignedUrl', () => {
       throw new Error('Server error')
     })
     const event: APIGatewayProxyEvent = {

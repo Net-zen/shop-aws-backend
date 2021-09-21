@@ -26,7 +26,7 @@ describe('Import service importProductsFile', () => {
     expect(result.statusCode).toEqual(200)
   })
 
-  test('should return valid signed url', async () => {
+  test('should return signed url', async () => {
     const event: APIGatewayProxyEvent = {
       queryStringParameters: {
         name: 'test-file'

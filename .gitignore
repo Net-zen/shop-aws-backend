@@ -9,3 +9,4 @@ node_modules/
 
 /import-service/test.json
 /import-service/test-post.json
+/import-service/coverage

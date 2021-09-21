@@ -7,7 +7,7 @@ import { middyfy } from '@libs/lambda'
 import schema from './schema'
 
 import * as AWS from 'aws-sdk'
-import * as csvParser from 'csv-parser'
+import csvParser from 'csv-parser'
 const BUCKET = 'store-import'
 
 const importFileParser: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
@@ -34,9 +34,7 @@ const importFileParser: ValidatedEventAPIGatewayProxyEvent<typeof schema> = asyn
           .pipe(csvParser())
           .on('data', data => results.push(data))
           .on('end', async () => {
-            results.forEach(product => {
-              console.log('product parsed from csv', product)
-            })
+            console.log('product parsed from csv', results)
             await s3.copyObject({
               Bucket: BUCKET,
               CopySource: `${BUCKET}/${item.Key}`,

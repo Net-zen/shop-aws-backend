@@ -14,7 +14,6 @@ const importFileParser: ValidatedEventAPIGatewayProxyEvent<typeof schema> = asyn
   console.log('importFileParser, event: ', event)
 
   const s3 = new AWS.S3({region: 'eu-west-1'})
-  const results = []
   const params = {
     Bucket: BUCKET,
     Prefix: 'uploaded/'
@@ -32,9 +31,8 @@ const importFileParser: ValidatedEventAPIGatewayProxyEvent<typeof schema> = asyn
         })
         stream.createReadStream()
           .pipe(csvParser())
-          .on('data', data => results.push(data))
+          .on('data', data => console.log('product parsed from csv: ', data))
           .on('end', async () => {
-            console.log('product parsed from csv', results)
             await s3.copyObject({
               Bucket: BUCKET,
               CopySource: `${BUCKET}/${item.Key}`,

@@ -49,7 +49,7 @@ const importFileParser: ValidatedEventAPIGatewayProxyEvent<typeof schema> = asyn
       }
     })
 
-    return formatJSONResponse(200, {s3response})
+    return formatJSONResponse(200)
   } catch (e) {
     return formatJSONResponse(500, {message: e.message})
   }

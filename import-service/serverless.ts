@@ -27,8 +27,13 @@ const serverlessConfiguration: AWS = {
     iamRoleStatements:[
       {
         Effect: 'Allow',
-        Action: 's3:*',
+        Action: 's3:ListBucket',
         Resource: 'arn:aws:s3:::store-import'
+      },
+      {
+        Effect: 'Allow',
+        Action: 's3:*',
+        Resource: 'arn:aws:s3:::store-import/*'
       }
     ],
     environment: {

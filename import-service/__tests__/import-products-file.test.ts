@@ -19,7 +19,7 @@ describe('Import service importProductsFile', () => {
   test('should return status code 200', async () => {
     const event: APIGatewayProxyEvent = {
       queryStringParameters: {
-        name: 'test-file'
+        name: TEST_FILE
       }
     } as any
     const result: result = await importProductsFile(event, undefined, undefined)
@@ -29,7 +29,7 @@ describe('Import service importProductsFile', () => {
   test('should return signed url', async () => {
     const event: APIGatewayProxyEvent = {
       queryStringParameters: {
-        name: 'test-file'
+        name: TEST_FILE
       }
     } as any
     const result: result = await importProductsFile(event, undefined, undefined)
@@ -43,7 +43,7 @@ describe('Import service importProductsFile', () => {
     })
     const event: APIGatewayProxyEvent = {
       queryStringParameters: {
-        name: 'test-file'
+        name: TEST_FILE
       }
     } as any
     const result: result = await importProductsFile(event, undefined, undefined)

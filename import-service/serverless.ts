@@ -41,6 +41,17 @@ const serverlessConfiguration: AWS = {
     },
     lambdaHashingVersion: '20201221',
   },
+  resources: {
+    Resources: {
+      SQSQueue: {
+        Type: 'AWS::SQS::Queue',
+        Properties: {
+          QueueName: 'store-import-service-sqs'
+
+        }
+      },
+    }
+  },
   // import the function via paths
   functions: { importProductsFile, importFileParser },
 };

@@ -6,3 +6,7 @@ node_modules/
 /product-service/test-post.json
 /product-service/.env
 /product-service/coverage
+
+/import-service/test.json
+/import-service/test-post.json
+/import-service/coverage

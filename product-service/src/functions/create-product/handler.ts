@@ -1,12 +1,12 @@
 import 'source-map-support/register';
 
-import type {ValidatedEventAPIGatewayProxyEvent} from '@libs/apiGateway';
-import {formatJSONResponse} from '@libs/apiGateway';
-import {middyfy} from '@libs/lambda';
+import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
+import { formatJSONResponse } from '@libs/apiGateway';
+import { middyfy } from '@libs/lambda';
 
 import schema from './schema';
 
-import {Client} from 'pg';
+import { Client } from 'pg';
 
 const {DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD} = process.env;
 const dbOptions = {

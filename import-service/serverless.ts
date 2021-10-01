@@ -24,7 +24,7 @@ const serverlessConfiguration: AWS = {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
     },
-    iamRoleStatements:[
+    iamRoleStatements: [
       {
         Effect: 'Allow',
         Action: 's3:ListBucket',

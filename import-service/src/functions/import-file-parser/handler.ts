@@ -39,9 +39,9 @@ const importFileParser: ValidatedEventAPIGatewayProxyEvent<typeof schema> = asyn
               MessageBody: JSON.stringify(data)
             }, (err, data) => {
               if (err) {
-                console.log('Error: ', err)
+                console.log('Error in sqs send message: ', err)
               } else {
-                console.log('Data: ', data)
+                console.log('Data in sqs send message: ', data)
               }
             })
           })

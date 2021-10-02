@@ -57,7 +57,6 @@ const serverlessConfiguration: AWS = {
         Type: 'AWS::SQS::Queue',
         Properties: {
           QueueName: 'catalogItemsQueue'
-
         }
       },
     }

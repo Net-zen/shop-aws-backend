@@ -64,7 +64,7 @@ const serverlessConfiguration: AWS = {
             Ref: 'SNSTopic'
           },
           FilterPolicy: {
-            "price": [{"numeric": [">=", 120]}]
+            "price": [{"numeric": ["<", 120]}]
           }
         }
       },

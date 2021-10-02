@@ -1,21 +1,24 @@
 import 'source-map-support/register'
 
-import type {ValidatedEventAPIGatewayProxyEvent} from '@libs/apiGateway'
 import {formatJSONResponse} from '@libs/apiGateway'
 import {middyfy} from '@libs/lambda'
 
-import schema from './schema'
-
 import * as AWS from 'aws-sdk'
+import {ProductService} from '../../services/product-service'
 
-const catalogBatchProcess: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
+const catalogBatchProcess = async (event) => {
   console.log('catalogBatchProcess, event: ', event)
 
   const sns = new AWS.SNS()
 
+  await ProductService.createClient()
+  await ProductService.connect()
+
   try {
-    const products = event.Records.map(({body}) => body)
-    console.log('!!!!!!!', JSON.parse(products));
+    const products = event.Records.map(({body}) => JSON.parse(body))
+
+    await Promise.all(products.map(async (product) => await ProductService.createProduct(product)))
+
     sns.publish({
       Subject: 'Products added',
       Message: JSON.stringify(products),
@@ -31,6 +34,8 @@ const catalogBatchProcess: ValidatedEventAPIGatewayProxyEvent<typeof schema> = a
     return formatJSONResponse(200, {message: 'Products added to db'})
   } catch (e) {
     return formatJSONResponse(500, {message: e.message})
+  } finally {
+    await ProductService.disconnect()
   }
 }
 

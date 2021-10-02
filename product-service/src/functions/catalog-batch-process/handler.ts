@@ -19,17 +19,26 @@ const catalogBatchProcess = async (event) => {
 
     await Promise.all(products.map(async (product) => await ProductService.createProduct(product)))
 
-    sns.publish({
-      Subject: 'Products added',
-      Message: JSON.stringify(products),
-      TopicArn: process.env.SNS_ARN
-    }, (err) => {
-      if (err) {
-        console.log('Error: ', err)
-      } else {
-        console.log('Send email with products: ', products);
-      }
+    products.forEach(product => {
+      sns.publish({
+        Subject: 'Products added',
+        Message: JSON.stringify(product),
+        MessageAttributes: {
+          "price": {
+            DataType: "Number",
+            StringValue: product.price
+          }
+        },
+        TopicArn: process.env.SNS_ARN
+      }, (err) => {
+        if (err) {
+          console.log('Error: ', err)
+        } else {
+          console.log('Send email with products: ', products);
+        }
+      })
     })
+
 
     return formatJSONResponse(200, {message: 'Products added to db'})
   } catch (e) {

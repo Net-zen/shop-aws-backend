@@ -56,11 +56,17 @@ const serverlessConfiguration: AWS = {
       SQSQueue: {
         Type: 'AWS::SQS::Queue',
         Properties: {
-          QueueName: 'catalogItemsQueue',
-          ReceiveMessageWaitTimeSeconds: 20
+          QueueName: 'catalogItemsQueue'
         }
       },
-    }
+    },
+    Outputs: {
+      SQSArn: {
+        Value: {
+          'Fn::GetAtt': ['SQSQueue', 'Arn'],
+        },
+      },
+    },
   },
   // import the function via paths
   functions: { importProductsFile, importFileParser },

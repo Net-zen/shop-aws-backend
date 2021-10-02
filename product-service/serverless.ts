@@ -64,7 +64,7 @@ const serverlessConfiguration: AWS = {
             Ref: 'SNSTopic'
           },
         }
-      }
+      },
     }
   },
   // import the function via paths

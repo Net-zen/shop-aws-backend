@@ -5,13 +5,10 @@ import {middyfy} from '@libs/lambda'
 import * as AWS from 'aws-sdk'
 import {ProductService} from '../../services/product-service'
 
-type snsEvent = {
-  Records: [
-    {
-      body: string
-    }
-  ]
-}
+
+type Record = { body: string }
+
+type snsEvent = { Records: Record[] }
 
 const catalogBatchProcess = async (event: snsEvent): Promise<void> => {
   console.log('catalogBatchProcess, event: ', event)
@@ -24,7 +21,7 @@ const catalogBatchProcess = async (event: snsEvent): Promise<void> => {
   try {
     const products = event.Records.map(({body}) => JSON.parse(body))
 
-    await Promise.all(products.map(async (product) => await ProductService.createProduct(product)))
+    await Promise.all(products.map(async (product) => ProductService.createProduct(product)))
 
     products.forEach(product => {
       sns.publish({

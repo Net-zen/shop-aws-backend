@@ -101,6 +101,33 @@ describe('ProductService catalogBatchProcess', () => {
 
 
     // @ts-ignore
+    expect(console.log.mock.calls[1][0]).toEqual('Error: ')
+    // @ts-ignore
+    expect(console.log.mock.calls[1][1]).toEqual(err)
+  })
+
+  test('should call sns.publish, catch and log errors', async () => {
+    console.log = jest.fn()
+
+    const err = new Error('error')
+
+    jest.clearAllMocks()
+
+    const publishMock = jest.fn((params) => params)
+    // @ts-ignore
+    ProductService.createProduct.mockImplementation(() => true)
+    AWS.restore('SNS')
+    AWS.mock('SNS', 'publish', (params, callback) => {
+      callback(err, publishMock(params));
+    })
+
+    const event: snsEvent = {Records: testProducts}
+    await catalogBatchProcess(event, undefined, undefined)
+
+
+    // @ts-ignore
+    expect(console.log.mock.calls[1][0]).toEqual("Error in sns: ")
+    // @ts-ignore
     expect(console.log.mock.calls[1][1]).toEqual(err)
   })
 })

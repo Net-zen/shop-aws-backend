@@ -1,12 +1,19 @@
 import 'source-map-support/register'
 
-import {formatJSONResponse} from '@libs/apiGateway'
 import {middyfy} from '@libs/lambda'
 
 import * as AWS from 'aws-sdk'
 import {ProductService} from '../../services/product-service'
 
-const catalogBatchProcess = async (event) => {
+type snsEvent = {
+  Records: [
+    {
+      body: string
+    }
+  ]
+}
+
+const catalogBatchProcess = async (event: snsEvent): Promise<void> => {
   console.log('catalogBatchProcess, event: ', event)
 
   const sns = new AWS.SNS()
@@ -38,11 +45,8 @@ const catalogBatchProcess = async (event) => {
         }
       })
     })
-
-
-    return formatJSONResponse(200, {message: 'Products added to db'})
   } catch (e) {
-    return formatJSONResponse(500, {message: e.message})
+    console.log('Error: ', e)
   } finally {
     await ProductService.disconnect()
   }

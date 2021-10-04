@@ -28,7 +28,7 @@ const testProducts = [{body: JSON.stringify(testProduct1)},
 
 
 jest.mock("../src/services/product-service")
-const publishMock = jest.fn((params) => params)
+const publishMock = jest.fn()
 
 describe('ProductService catalogBatchProcess', () => {
   beforeAll(() => {
@@ -113,7 +113,7 @@ describe('ProductService catalogBatchProcess', () => {
 
     jest.clearAllMocks()
 
-    const publishMock = jest.fn((params) => params)
+    const publishMock = jest.fn()
     // @ts-ignore
     ProductService.createProduct.mockImplementation(() => true)
     AWS.restore('SNS')

@@ -38,7 +38,7 @@ const catalogBatchProcess = async (event: snsEvent): Promise<void> => {
         if (err) {
           console.log('Error in sns: ', err)
         } else {
-          console.log('Send email with products: ', products);
+          console.log('Send email with products: ', product);
         }
       })
     })

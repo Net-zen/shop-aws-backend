@@ -21,7 +21,7 @@ const catalogBatchProcess = async (event: snsEvent): Promise<void> => {
   try {
     const products = event.Records.map(({body}) => JSON.parse(body))
 
-    await Promise.all(products.map(async (product) => ProductService.createProduct(product)))
+    await Promise.all(products.map((product) => ProductService.createProduct(product)))
 
     products.forEach(product => {
       sns.publish({

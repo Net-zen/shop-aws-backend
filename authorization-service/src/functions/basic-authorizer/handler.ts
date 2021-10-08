@@ -1,7 +1,7 @@
 // import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway'
 // import { formatJSONResponse } from '@libs/apiGateway'
-import { middyfy } from '@libs/lambda'
-import { APIGatewayTokenAuthorizerHandler, APIGatewayAuthorizerResult} from 'aws-lambda'
+import {middyfy} from '@libs/lambda'
+import {APIGatewayTokenAuthorizerHandler, APIGatewayAuthorizerResult} from 'aws-lambda'
 
 // import schema from './schema'
 
@@ -15,7 +15,7 @@ const basicAuthorizer: APIGatewayTokenAuthorizerHandler = async (event, _ctx, cb
     console.log('authorizationToken: ', authorizationToken)
     const [_type, encodedCreds] = authorizationToken.split(' ')
     const buff = Buffer.from(encodedCreds, 'base64')
-    const [ username, password ] = buff.toString('utf-8').split(':')
+    const [username, password] = buff.toString('utf-8').split(':')
 
     console.log(`Username: ${username}, password: ${password}`)
 
@@ -29,7 +29,7 @@ const basicAuthorizer: APIGatewayTokenAuthorizerHandler = async (event, _ctx, cb
 
     return policy
   } catch (e) {
-    cb(`Unauthorized: e.message`)
+    cb(`Forbidden: e.message`)
   }
 
 

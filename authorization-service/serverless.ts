@@ -32,6 +32,15 @@ const serverlessConfiguration: AWS = {
     },
     lambdaHashingVersion: '20201221',
   },
+  resources: {
+    Outputs: {
+      AuthorizerArn: {
+        Value: {
+          'Fn::GetAtt': ['BasicAuthorizerLambdaFunction', 'Arn'],
+        },
+      },
+    },
+  },
   // import the function via paths
   functions: { basicAuthorizer },
 };

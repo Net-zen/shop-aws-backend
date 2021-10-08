@@ -1,9 +1,5 @@
-// import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway'
-// import { formatJSONResponse } from '@libs/apiGateway'
 import {middyfy} from '@libs/lambda'
 import {APIGatewayTokenAuthorizerHandler, APIGatewayAuthorizerResult} from 'aws-lambda'
-
-// import schema from './schema'
 
 const basicAuthorizer: APIGatewayTokenAuthorizerHandler = async (event, _ctx, cb) => {
   console.log('basicAuthorizer, event: ', event)
@@ -31,12 +27,6 @@ const basicAuthorizer: APIGatewayTokenAuthorizerHandler = async (event, _ctx, cb
   } catch (e) {
     cb(`Forbidden: e.message`)
   }
-
-
-  // return formatJSONResponse({
-  //   message: `Hello ${event.body.name}, welcome to the exciting Serverless world!`,
-  //   event,
-  // });
 }
 
 const generatePolicy = (principalId, Resource, Effect): APIGatewayAuthorizerResult => {

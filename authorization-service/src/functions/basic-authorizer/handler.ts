@@ -11,8 +11,9 @@ const basicAuthorizer: APIGatewayTokenAuthorizerHandler = async (event, _ctx, cb
   if (event['type'] !== 'TOKEN') cb('Unauthorized')
 
   try {
-    const { authorizationToken } = event
-    const [ _type, encodedCreds ] = authorizationToken
+    const {authorizationToken} = event
+    console.log('authorizationToken: ', authorizationToken)
+    const [_type, encodedCreds] = authorizationToken.split(' ')
     const buff = Buffer.from(encodedCreds, 'base64')
     const [ username, password ] = buff.toString('utf-8').split(':')
 

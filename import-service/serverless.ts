@@ -24,7 +24,7 @@ const serverlessConfiguration: AWS = {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
     },
-    iamRoleStatements:[
+    iamRoleStatements: [
       {
         Effect: 'Allow',
         Action: 's3:ListBucket',
@@ -34,12 +34,39 @@ const serverlessConfiguration: AWS = {
         Effect: 'Allow',
         Action: 's3:*',
         Resource: 'arn:aws:s3:::store-import/*'
-      }
+      },
+      {
+        Effect: 'Allow',
+        Action: 'sqs:*',
+        Resource: {
+          'Fn::GetAtt': ['SQSQueue', 'Arn']
+        },
+      },
     ],
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      SQS_URL: {
+        Ref: 'SQSQueue'
+      }
     },
     lambdaHashingVersion: '20201221',
+  },
+  resources: {
+    Resources: {
+      SQSQueue: {
+        Type: 'AWS::SQS::Queue',
+        Properties: {
+          QueueName: 'catalogItemsQueue'
+        }
+      },
+    },
+    Outputs: {
+      SQSArn: {
+        Value: {
+          'Fn::GetAtt': ['SQSQueue', 'Arn'],
+        },
+      },
+    },
   },
   // import the function via paths
   functions: { importProductsFile, importFileParser },

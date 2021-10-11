@@ -1,6 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 
-import { getProductsList, getProductsById, createProduct } from '@functions/index';
+import { getProductsList, getProductsById, createProduct, catalogBatchProcess } from '@functions/index';
 
 const serverlessConfiguration: AWS = {
   service: 'product-service',
@@ -25,18 +25,66 @@ const serverlessConfiguration: AWS = {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
     },
+    iamRoleStatements: [
+      {
+        Effect: 'Allow',
+        Action: 'sns:*',
+        Resource: {
+          'Ref': 'SNSTopic'
+        },
+      },
+    ],
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       DB_HOST: '${env:DB_HOST}',
       DB_PORT: '${env:DB_PORT}',
       DB_DATABASE: '${env:DB_DATABASE}',
       DB_USERNAME: '${env:DB_USERNAME}',
-      DB_PASSWORD: '${env:DB_PASSWORD}'
+      DB_PASSWORD: '${env:DB_PASSWORD}',
+      SNS_ARN: {
+        Ref: 'SNSTopic'
+      },
     },
     lambdaHashingVersion: '20201221',
   },
+  resources: {
+    Resources: {
+      SNSTopic: {
+        Type: 'AWS::SNS::Topic',
+        Properties: {
+          TopicName: 'createProductTopic',
+        }
+      },
+      SNSSubscription: {
+        Type: 'AWS::SNS::Subscription',
+        Properties: {
+          Endpoint: '${env:EMAIL}',
+          Protocol: 'email',
+          TopicArn: {
+            Ref: 'SNSTopic'
+          },
+          FilterPolicy: {
+            "price": [{"numeric": ["<", 120]}]
+          }
+        }
+      },
+      SNSSubscription2: {
+        Type: 'AWS::SNS::Subscription',
+        Properties: {
+          Endpoint: '${env:EMAIL_2}',
+          Protocol: 'email',
+          TopicArn: {
+            Ref: 'SNSTopic'
+          },
+          FilterPolicy: {
+            "price": [{"numeric": [">=", 120]}]
+          }
+        }
+      },
+    }
+  },
   // import the function via paths
-  functions: { getProductsList, getProductsById, createProduct },
+  functions: { getProductsList, getProductsById, createProduct, catalogBatchProcess },
 };
 
 module.exports = serverlessConfiguration;

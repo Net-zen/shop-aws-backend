@@ -14,6 +14,7 @@ const importFileParser: ValidatedEventAPIGatewayProxyEvent<typeof schema> = asyn
   console.log('importFileParser, event: ', event)
 
   const s3 = new AWS.S3({region: 'eu-west-1'})
+  const sqs = new AWS.SQS()
   const params = {
     Bucket: BUCKET,
     Prefix: 'uploaded/'
@@ -31,7 +32,19 @@ const importFileParser: ValidatedEventAPIGatewayProxyEvent<typeof schema> = asyn
         })
         stream.createReadStream()
           .pipe(csvParser())
-          .on('data', data => console.log('product parsed from csv: ', data))
+          .on('data', data => {
+            console.log('product parsed from csv: ', data)
+            sqs.sendMessage({
+              QueueUrl: process.env.SQS_URL,
+              MessageBody: JSON.stringify(data)
+            }, (err, data) => {
+              if (err) {
+                console.log('Error in sqs send message: ', err)
+              } else {
+                console.log('Data in sqs send message: ', data)
+              }
+            })
+          })
           .on('end', async () => {
             await s3.copyObject({
               Bucket: BUCKET,

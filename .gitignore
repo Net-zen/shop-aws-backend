@@ -13,8 +13,7 @@ coverage
 !.elasticbeanstalk/*.global.yml
 
 # compiled output
-/dist
-/node_modules
+dist/
 
 # Logs
 logs

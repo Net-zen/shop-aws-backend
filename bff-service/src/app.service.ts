@@ -10,7 +10,7 @@ export class AppService {
     @Inject(REQUEST) private readonly request: Request,
     @Inject(CACHE_MANAGER) private cacheManager: Cache
     ) {}
-  async getHello() {
+  async getResponceFromBackend() {
     console.log('originalUrl', this.request.originalUrl);
     console.log('method', this.request.method);
     console.log('body', this.request.body);

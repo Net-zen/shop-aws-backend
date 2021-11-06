@@ -8,8 +8,8 @@ export class AppController {
 
   @All('*')
   @Header('content-type', 'application/json')
-  async getHello(@Res() res: Response): Promise<void> {
-    const result = await this.appService.getHello();
+  async getResponceFromBackend(@Res() res: Response): Promise<void> {
+    const result = await this.appService.getResponceFromBackend();
     res.status(result.status).json(result.data)
   }
 }

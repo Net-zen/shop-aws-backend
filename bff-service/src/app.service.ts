@@ -15,8 +15,14 @@ export class AppService {
     console.log('method', this.request.method);
     console.log('body', this.request.body);
 
-    const recipient = this.request.originalUrl.split('/')[1];
+    let recipient = this.request.originalUrl.split('/')[1];
     console.log('recipient', recipient);
+
+    if (recipient === 'ping') {
+      recipient = 'cart_ping';
+    }else if ( recipient === 'profile' || recipient === 'auth') {
+      recipient = 'cart';
+    }
 
     const recipientUrl = process.env[recipient];
     console.log('recipientUrl', recipientUrl);
